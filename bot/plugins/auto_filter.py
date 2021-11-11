@@ -227,10 +227,19 @@ async def auto_filter(bot, update):
             movies = ia.search_movie(my_movie)
             #print(f"{movies[0].movieID} {movies[0]['title']}")
             movie_url = movies[0].get_fullsizeURL()
-
+            imdb=await get_poster(query)
             await bot.send_photo(
                 photo=movie_url,
-                caption=f"<b>📂 ᴍᴏᴠɪᴇ ɴᴀᴍᴇ :</b> <code>{query}</code>\n<b>🎬 Total File :- {(len_results)} </b>\n<b>🎭 Requested By:- {update.from_user.mention}</b>\n<b>📽️ ᴍᴀɪɴ ᴄʜᴀɴɴᴇʟ : <a href='https://t.me/mcnewmovies'>Ⓜ️©സിനിമകൾⓂ️©</a></b>\n<b>©️ ᴘᴏᴡᴇʀᴇᴅ ʙʏ : <a href='https://t.me/Movies_Club_2019'>M🌀𝚅𝙸𝙴𝚂_𝙲𝙻𝚄𝙱</a></b>\n<b>📃 ɴᴏᴛɪᴄᴇ : <code>ɪ𝙵 ʏᴏᴜ ᴅᴏ ɴᴏᴛ sᴇᴇ ᴛʜᴇ 𝙵ɪʟᴇ𝚂 ᴏ𝙵 ᴛʜɪ𝚂 ᴍᴏᴠɪᴇ ʏᴏᴜ ᴀ𝚂ᴋᴇᴅ 𝙵ᴏʀ. ʟᴏᴏᴋ ᴀᴛ ɴᴇ𝚇ᴛ ᴘᴀɢᴇ</code></b>",
+                caption=f"""↪️ Requested: {query}
+🎞️ Title: <a href={imdb['url']}>{imdb.get('title')}
+🎭 Genres: {imdb.get('genres')}
+📆 Year: <a href={imdb['url']}/releaseinfo>{imdb.get('year')}</a>
+🌟 Rating: <a href={imdb['url']}/ratings>{imdb.get('rating')}</a> / 10
+🗃️ Total Files : {(len_results)}
+📑 Total Page : 1/{len_result if len_result < max_pages else max_pages}
+👤 Requested By : {update.from_user.mention}
+🖋 StoryLine: <code>{imdb.get('plot')} </code>"
+☑️ Chat : {update.chat.title}""",
                 reply_markup=reply_markup,
                 chat_id=update.chat.id,
                 reply_to_message_id=update.message_id,
